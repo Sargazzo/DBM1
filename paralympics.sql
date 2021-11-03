@@ -1,3 +1,20 @@
+----------------------
+--Tables' Clear:
+----------------------
+DROP TABLE if EXISTS medalists CASCADE;
+DROP TABLE if EXISTS event CASCADE;
+DROP TABLE if EXISTS enrolled CASCADE;
+DROP TABLE if EXISTS sport CASCADE;
+DROP TABLE if EXISTS athlete CASCADE;
+DROP TABLE if EXISTS coach CASCADE;
+DROP TABLE if EXISTS person CASCADE;
+DROP TABLE if EXISTS country CASCADE;
+
+-------------------
+--TABLES CREATION--
+-------------------
+
+
 CREATE TABLE country(
     country_code VARCHAR (3),
     name VARCHAR(75),
