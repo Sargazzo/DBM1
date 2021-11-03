@@ -27,6 +27,7 @@ CREATE TABLE country(
 
 CREATE TABLE person(
     id SERIAL,
+    first_name VARCHAR(50),
     last_name VARCHAR(75),
     PRIMARY KEY (id)
 );
@@ -83,3 +84,6 @@ CREATE TABLE medalists(
     FOREIGN KEY (sport_code, name) REFERENCES event (sport_code,name),
     FOREIGN KEY (id) REFERENCES person (id)
 );
+
+
+-- INSERT INTO person VALUES(DEFAULT, 'ANA', 'MATOS')
