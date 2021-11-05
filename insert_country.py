@@ -63,10 +63,52 @@ try:
         # Commit the update (without this step the database will not change)
         connection.commit()
         
-        # Updating the countries to its true medal ranking
+    ################ Updating the countries to its true medal ranking ###################
+    
+    #Reset the flag
+    first = 0;
+    #Reading each line of the file with the athlete data
+    for line in medalist_countries:
+        
+        #The first line is ignored
+        if first == 0:
+            first = -1
+            continue
+        
+        #Removes the paragraph symbol and separates the info by each comma
+        work_line = line.split("\n")[0]
+        work_line = work_line.split(",")
+        
+        
+        #Get the rank
+        rank = work_line[0]
+        
+        #Get the medal number for each country
+        
+        #If it is a country with a compose name
+        if work_line[1][1:] == 'Hong Kong' or work_line[1][1:] == 'Virgin Islands':
+             code = work_line[3]
+             gold = work_line[4]
+             silver = work_line[5]
+             bronze = work_line[6]
+            
+        else:
+            code = work_line[2]
+            gold = work_line[3]
+            silver = work_line[4]
+            bronze = work_line[5]
+            
         
     
+        sql_country_update = 'UPDATE country SET total_medal_rank = %s, gold_medal_count = %s, silver_medal_count = %s, bronze_medal_count = %s WHERE country_code = %s;'
     
+        update_data = (rank, gold, silver, bronze,code)
+        
+        # Feed the data to the SQL query as follows to avoid SQL injection
+        cursor.execute(sql_country_update, update_data)
+        
+        # Commit the update (without this step the database will not change)
+        connection.commit()
 
 #If something goes wrong
 except Exception as error_description:
