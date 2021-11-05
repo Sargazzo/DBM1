@@ -41,10 +41,13 @@ try:
         work_line = work_line.split(",")
                 
         #Inserting in person table
-        sql_person = 'INSERT INTO person VALUES (DEFAULT, %s, %s);'
+        sql_person = 'INSERT INTO person VALUES (DEFAULT, %s, %s, %s);'
         
         #Getting first and last name
-        data = (work_line[1],work_line[2])
+        if work_line[3][1:] == 'Hong Kong' or work_line[3][1:] == 'Virgin Islands':
+            data = (work_line[1],work_line[2], work_line[5])
+        else:
+            data = (work_line[1],work_line[2], work_line[4])
         
         # Feed the data to the SQL query as follows to avoid SQL injection
         cursor.execute(sql_person, data)
@@ -52,7 +55,7 @@ try:
         #GET The ID of the new person
         sql_get_person_ID = 'SELECT MAX(id) from person;'
         
-        #Executes the querie
+        #Executes the query
         cursor.execute(sql_get_person_ID)
         
         #Gets the ID from the new person inserted
@@ -61,7 +64,8 @@ try:
         #Get the current ID
         for personID in ID:
             break
-       
+
+
         #Insert values in athlete table
         sql_athlete = 'INSERT INTO athlete VALUES (%s, %s, %s);'
         
@@ -69,15 +73,37 @@ try:
 
         if work_line[3][1:] == 'Hong Kong' or work_line[3][1:] == 'Virgin Islands':
             data_athlete = (personID, work_line[8], work_line[9])
+            sport_code = work_line[7]
+            country_code = work_line[5]
             
         else:
             data_athlete = (personID, work_line[7], work_line[8])
+            sport_code = work_line[6]
+            country_code = work_line[4]
+
         cursor.execute(sql_athlete, data_athlete)
+    
+
+        #Inserting in enrolled table
+        sql_enrolled = 'INSERT INTO enrolled VALUES (%s, %s, 2020);'
+
+        data_enrolled = (sport_code, personID)
         
+        cursor.execute(sql_enrolled, data_enrolled)
+
+        """#Inserting in represents table
+        sql_represents = 'INSERT INTO represents VALUES (%s, %s);'
+
+        data_represents = (personID, country_code)
+        
+        cursor.execute(sql_represents, data_represents)
+"""
     	
     	# Commit the update (without this step the database will not change)
         connection.commit()
+
     
+
     
 
 #If something goes wrong
