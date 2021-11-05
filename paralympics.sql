@@ -31,7 +31,9 @@ CREATE TABLE person(
         (START WITH 1 INCREMENT BY 1),
     first_name VARCHAR(50),
     last_name VARCHAR(75),
-    PRIMARY KEY (id)
+    represents VARCHAR(3),
+    PRIMARY KEY (id),
+    FOREIGN KEY (represents) REFERENCES country(country_code)
 );
 
 CREATE TABLE coach(
@@ -49,6 +51,8 @@ CREATE TABLE athlete(
 );
 
 -- Person represents a country
+
+/*
 CREATE TABLE represents(
     id INT NOT NULL,
     country_code VARCHAR (3),
@@ -56,6 +60,8 @@ CREATE TABLE represents(
     FOREIGN KEY (id) REFERENCES person (id),
     FOREIGN KEY (country_code) REFERENCES country (country_code)
 );
+*/
+-------------------------------------
 -- Sports Table --
 
 CREATE TABLE sport(
@@ -70,7 +76,6 @@ CREATE TABLE enrolled(
     sport_code VARCHAR(3),
     id INT,
     year INT,
-    female_num INT,
     PRIMARY KEY (sport_code, id, year),
     FOREIGN KEY (id) REFERENCES person (id),
     FOREIGN KEY (sport_code) REFERENCES sport (sport_code)
