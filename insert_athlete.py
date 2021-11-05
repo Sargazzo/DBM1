@@ -39,68 +39,92 @@ try:
             continue
         work_line = line.split("\n")[0]
         work_line = work_line.split(",")
-                
-        #Inserting in person table
-        sql_person = 'INSERT INTO person VALUES (DEFAULT, %s, %s, %s);'
         
-        #Getting first and last name
+        #Get the athlete name
+        first_name = work_line[1]
+        last_name = work_line[2]
+        
+        #Get the other needed data
         if work_line[3][1:] == 'Hong Kong' or work_line[3][1:] == 'Virgin Islands':
-            data = (work_line[1],work_line[2], work_line[5])
-        else:
-            data = (work_line[1],work_line[2], work_line[4])
-        
-        # Feed the data to the SQL query as follows to avoid SQL injection
-        cursor.execute(sql_person, data)
-        
-        #GET The ID of the new person
-        sql_get_person_ID = 'SELECT MAX(id) from person;'
-        
-        #Executes the query
-        cursor.execute(sql_get_person_ID)
-        
-        #Gets the ID from the new person inserted
-        ID = cursor.fetchone()
-        
-        #Get the current ID
-        for personID in ID:
-            break
-
-
-        #Insert values in athlete table
-        sql_athlete = 'INSERT INTO athlete VALUES (%s, %s, %s);'
-        
-        #The Hong Kong and Virgin Islands Countries have a comma in the name
-
-        if work_line[3][1:] == 'Hong Kong' or work_line[3][1:] == 'Virgin Islands':
-            data_athlete = (personID, work_line[8], work_line[9])
-            sport_code = work_line[7]
             country_code = work_line[5]
+            sport_code = work_line[7]
+            birthday = work_line[8]
+            gender = work_line[9][0]
             
+        #Countries without a comma in its name
         else:
-            data_athlete = (personID, work_line[7], work_line[8])
+            country_code = work_line[4]
             sport_code = work_line[6]
             country_code = work_line[4]
-
-        cursor.execute(sql_athlete, data_athlete)
+            birthday = work_line[7]
+            gender = work_line[8][0]
+                
+        sql_verify_person = 'SELECT id from person NATURAL JOIN athlete WHERE first_name = %s AND last_name = %s AND date_of_birthday = %s AND represents = %s;'
+        
+        verify_data = (first_name, last_name, birthday, country_code)
+        
+        cursor.execute(sql_verify_person, verify_data)
+        verify = cursor.fetchone()
+        
+        #If that player already exists in the data we are introducing - just add to enrolled table
+        if verify:
+            
+            #Get the ID
+            for personID in verify:
+                break
+            #Inserting in enrolled table
+            sql_enrolled = 'INSERT INTO enrolled VALUES (%s, %s, 2020);'
     
-
-        #Inserting in enrolled table
-        sql_enrolled = 'INSERT INTO enrolled VALUES (%s, %s, 2020);'
-
-        data_enrolled = (sport_code, personID)
+            data_enrolled = (sport_code, personID)
+            
+            cursor.execute(sql_enrolled, data_enrolled)
+    
+        	
+        	# Commit the update (without this step the database will not change)
+            connection.commit()
+            
+        #New insert
+        else:
+            #Inserting in person table
+            sql_person = 'INSERT INTO person VALUES (DEFAULT, %s, %s, %s);'
+            
+            data_person = (first_name, last_name, country_code)
+            
+            # Feed the data to the SQL query as follows to avoid SQL injection
+            cursor.execute(sql_person, data_person)
+            
+            #GET The ID of the new person
+            sql_get_person_ID = 'SELECT MAX(id) from person;'
+            
+            #Executes the query
+            cursor.execute(sql_get_person_ID)
+            
+            #Gets the ID from the new person inserted
+            ID = cursor.fetchone()
+            
+            #Get the current ID
+            for personID in ID:
+                break
+    
+    
+            #Insert values in athlete table
+            sql_athlete = 'INSERT INTO athlete VALUES (%s, %s, %s);'
+            
+            data_athlete = (personID,birthday,gender)
+    
+            cursor.execute(sql_athlete, data_athlete)
         
-        cursor.execute(sql_enrolled, data_enrolled)
-
-        """#Inserting in represents table
-        sql_represents = 'INSERT INTO represents VALUES (%s, %s);'
-
-        data_represents = (personID, country_code)
-        
-        cursor.execute(sql_represents, data_represents)
-"""
-    	
-    	# Commit the update (without this step the database will not change)
-        connection.commit()
+    
+            #Inserting in enrolled table
+            sql_enrolled = 'INSERT INTO enrolled VALUES (%s, %s, 2020);'
+    
+            data_enrolled = (sport_code, personID)
+            
+            cursor.execute(sql_enrolled, data_enrolled)
+    
+        	
+        	# Commit the update (without this step the database will not change)
+            connection.commit()
 
     
 
