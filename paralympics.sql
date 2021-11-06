@@ -92,10 +92,11 @@ CREATE TABLE event(
 --
 CREATE TABLE medalists(
     sport_code VARCHAR(3),
-    name VARCHAR(50),
+    event_name VARCHAR(50),
     id INT,
+    medal_type VARCHAR(6),
     year INT,
-    PRIMARY KEY (sport_code,name,id,year),
-    FOREIGN KEY (sport_code, name) REFERENCES event (sport_code,name),
+    PRIMARY KEY (sport_code,event_name,id,year),
+    FOREIGN KEY (sport_code, event_name) REFERENCES event (sport_code,name),
     FOREIGN KEY (id) REFERENCES person (id)
 );
