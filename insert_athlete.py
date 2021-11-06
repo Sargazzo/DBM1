@@ -13,7 +13,7 @@ connection = None
 
 
 #Directory of the file with the data
-file_dir = str(pathlib.Path(__file__).parent.absolute()) + '/athletes-preprocessed.csv'
+file_dir = str(pathlib.Path(__file__).parent.absolute()) + '/Real Data/athletes-preprocessed.csv'
 
 #Opens the file with info
 file = open(file_dir, "r")

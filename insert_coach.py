@@ -35,41 +35,78 @@ try:
             continue
         work_line = line.split("\n")[0]
         work_line = work_line.split(",")
+        
+        # Remove the space before the beginning of the word
+        first_name = work_line[1][1:] # Remove the second part when the csv does not have spaces
+        last_name = work_line[2][1:]
+        country_code = work_line[4]
+        sport_code = work_line[6]
                 
-       #Inserting in person table
-        sql_person = 'INSERT INTO person VALUES (DEFAULT, %s, %s, %s);'
-        
-        data_person = (work_line[1],work_line[2], work_line[4])
-       
-        # Feed the data to the SQL query as follows to avoid SQL injection
-        cursor.execute(sql_person, data_person)
-        
-        #GET The ID of the new person
-        sql_get_person_ID = 'SELECT MAX(id) from person;'
-        
-        #Executes the query
-        cursor.execute(sql_get_person_ID)
-        
-        #Gets the ID from the new person inserted
-        ID = cursor.fetchone()
-        
-        #Get the current ID
-        for personID in ID:
-            break
-        
-        sql_verify_person = 'SELECT id from person NATURAL JOIN coach WHERE first_name = %s AND last_name = %s;'
+        # Verify if the coach exists already in the table
+        sql_verify_person = 'SELECT id from person NATURAL JOIN coach WHERE first_name = %s AND last_name = %s AND represents = %s;'
         
         verify_data = (first_name, last_name, country_code)
         
         cursor.execute(sql_verify_person, verify_data)
         verify = cursor.fetchone()
         
-        #If that player already exists in the data we are introducing - just add to enrolled table
+        #If that coach already exists in the data we are introducing - just add to enrolled table
         if verify:
+            
             
             #Get the ID
             for personID in verify:
                 break
+            
+            sql_verify_coach = 'Select sport_code, year FROM enrolled WHERE id = %s;'
+            cursor.execute(sql_verify_coach, [personID])
+            
+            info = cursor.fetchone()
+            
+            # If the coach is inserted already but with a different gender
+            if sport_code == info[0] and 2020 == info[1]:
+                continue
+            
+            else:
+                #Inserting in enrolled table
+                sql_enrolled = 'INSERT INTO enrolled VALUES (%s, %s, 2020);'
+        
+                data_enrolled = (sport_code, personID)
+                
+                cursor.execute(sql_enrolled, data_enrolled)
+        
+            	
+            	# Commit the update (without this step the database will not change)
+                connection.commit()
+            
+        #New insert
+        else:
+            #Inserting in person table
+            sql_person = 'INSERT INTO person VALUES (DEFAULT, %s, %s, %s);'
+            
+            data_person = (first_name,last_name, country_code)
+        
+            # Feed the data to the SQL query as follows to avoid SQL injection
+            cursor.execute(sql_person, data_person)
+            
+            #Get the inserted ID
+            sql_get_person_ID = 'SELECT MAX(id) from person;'
+            
+            #Executes the query
+            cursor.execute(sql_get_person_ID)
+            
+            #Gets the ID from the new person inserted
+            ID = cursor.fetchone()
+            
+            #Get the current ID
+            for personID in ID:
+                break    
+
+            #Insert values in coach table
+            sql_coach = 'INSERT INTO coach VALUES (%s);'
+            
+            cursor.execute(sql_coach, [personID])
+            
             #Inserting in enrolled table
             sql_enrolled = 'INSERT INTO enrolled VALUES (%s, %s, 2020);'
     
@@ -80,35 +117,6 @@ try:
         	
         	# Commit the update (without this step the database will not change)
             connection.commit()
-            
-        #New insert
-        else:
-            #Inserting in person table
-            sql_person = 'INSERT INTO person VALUES (DEFAULT, %s, %s, %s);'
-            
-            data_person = (work_line[1],work_line[2], work_line[4])
-        
-            # Feed the data to the SQL query as follows to avoid SQL injection
-            cursor.execute(sql_person, data_person)
-            
-            #Gets the ID from the new person inserted
-            ID = cursor.fetchone()
-            
-            #Get the current ID
-            for personID in ID:
-                break
-    
-
-        #Insert values in coach table
-        sql_coach = 'INSERT INTO coach VALUES (%s);'
-
-        data_coach = (personID,)
-    
-        cursor.execute(sql_coach, data_coach)
-        
-    	
-    	# Commit the update (without this step the database will not change)
-        connection.commit()
     
     
 

@@ -75,7 +75,6 @@ try:
                 else:
                     firstname = firstname + " " + word
             
-        print('ola'+firstname+'-'+lastname)
         # Get the person ID
         
         sql_get_id = 'SELECT id from person NATURAL JOIN enrolled WHERE first_name = %s AND last_name = %s AND sport_code = %s AND represents = %s;'
