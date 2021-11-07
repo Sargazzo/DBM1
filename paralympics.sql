@@ -89,7 +89,7 @@ CREATE TABLE event(
     FOREIGN KEY (sport_code) REFERENCES sport (sport_code)
 );
 
---
+-- References of table
 CREATE TABLE medalists(
     sport_code VARCHAR(3),
     event_name VARCHAR(50),
@@ -98,5 +98,11 @@ CREATE TABLE medalists(
     year INT,
     PRIMARY KEY (sport_code,event_name,id,year),
     FOREIGN KEY (sport_code, event_name) REFERENCES event (sport_code,name),
-    FOREIGN KEY (id) REFERENCES person (id)
+    FOREIGN KEY (id,year,sport_code) REFERENCES enrolled (id,year,sport_code)
 );
+
+-- Verify if the medal inserted is valid
+ALTER TABLE medalists ADD CONSTRAINT valid_medal CHECK(
+        medal_type = 'Gold' OR
+        medal_type = 'Silver' OR
+        medal_type = 'Bronze');

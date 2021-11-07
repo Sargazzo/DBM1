@@ -1,20 +1,28 @@
--- First Query -- Check
-SELECT sport_code, COUNT(id) as participants FROM enrolled
-GROUP BY sport_code;
+-- First Query -- Katharina corrected it
+SELECT sport_code, COUNT(DISTINCT(id)) AS participants
+FROM enrolled
+GROUP BY sport_code
+ORDER BY participants DESC;
 
--- Second Query -- It's incomplete if there are more people in first ath the same time or in second
-SELECT first_name, COUNT(first_name) AS occurences_count
-FROM person
+SELECT name,(male_num + female_num) AS num_of_athletes
+FROM sport
+ORDER BY num_of_athletes DESC;
+
+-- Second Query --
+
+-- This works when all the names are repeated different number times
+SELECT first_name, COUNT(first_name) AS name_count
+FROM person NATURAL JOIN athlete
 WHERE first_name IS NOT NULL
-GROUP BY first_name
-ORDER BY occurences_count DESC
+GROUP BY(first_name)
+ORDER BY name_count DESC
 LIMIT 1 OFFSET 1;
 
 
--- This works - Cant eliminate the NULL value
+-- This works for all cases
 SELECT first_name, COUNT(first_name)
     FROM person NATURAL JOIN athlete
-    WHERE first_name IS NOT NULL AND first_name NOT IN
+    WHERE first_name != '' AND first_name NOT IN
         (SELECT first_name
             FROM person NATURAL JOIN athlete
             WHERE first_name IS NOT NULL
@@ -43,14 +51,11 @@ SELECT first_name, COUNT(first_name)
     ORDER BY first_name DESC
     );
 
--- Third query -- still wrong, get each medal
-SELECT c.name,COUNT(c.country_code) AS medal_num
-FROM (medalists as m INNER JOIN  person as p
-    ON m.id = p.id) as mp
-    INNER JOIN COUNTRY as c ON c.country_code = mp.represents
-WHERE mp.year = 2020
-GROUP BY c.country_code
-ORDER BY medal_num DESC;
+-- Third query -- Check - each
+
+SELECT name, gold_medal_count, silver_medal_count, bronze_medal_count
+FROM COUNTRY
+ORDER BY total_medal_rank ASC;
 
 -- Fourth Query -- Incomplete I dont know how to add the count and the names in the same table
 
@@ -64,7 +69,7 @@ FROM person as p NATURAL JOIN athlete as a
 WHERE EXTRACT (YEAR FROM a.date_of_birthday) BETWEEN 1980 AND 1990;
 
 -- Fifth Query -- Check
-SELECT date_of_birthday
+SELECT EXTRACT (YEAR FROM date_of_birthday)
 FROM athlete NATURAL JOIN person
 WHERE id IN
         (SELECT id
@@ -128,16 +133,39 @@ ORDER BY count DESC;
 
 -- NEEDS SPECIFIC INPUTS
 
-SELECT first_name,last_name
-FROM person NATURAL JOIN athlete NATURAL JOIN medalists
-WHERE gender = 'F' AND id IN
+SELECT DISTINCT(winner.id), winner.first_name,winner.last_name
+FROM (person NATURAL JOIN athlete NATURAL JOIN medalists) AS winner
+WHERE winner.gender = 'F' AND winner.id IN(
+    SELECT id
+    FROM medalists AS m
+    WHERE m.id = winner.id AND m.year = winner.year AND m.sport_code != winner.sport_code
+    )
+ORDER BY winner.id;
 
 -- Eighth Query --
 
 -- NEEDS SPECIFIC INPUTS
 
+-- Assumptions: taken into account that performance improvement is not receiving a medal to receiving a medal
+SELECT DISTINCT(init.id), init.first_name,init.last_name,init.sport_code
+FROM (person NATURAL JOIN athlete NATURAL JOIN enrolled) AS init
+WHERE init.id IN(
+        SELECT e.id
+        FROM (SELECT id FROM enrolled WHERE year = init.year) AS e -- Enrolled in the first year
+            INNER JOIN (SELECT id from medalists WHERE year = init.year + 8) AS win -- Winner 3rd edition
+            ON e.id = win.id
+            EXCEPT(SELECT m.id -- Not medalist in the first year
+               FROM medalists AS m
+               WHERE m.year = init.year)
+        )
+    AND init.id NOT IN( -- not enrolled in the 2nd edition
+        SELECT id
+        FROM enrolled
+        WHERE year = (init.year + 4)
+    )
+ORDER BY init.id ASC;
 
 
-
-
-
+INSERT INTO enrolled VALUES('JUD',1,2028);
+INSERT INTO enrolled VALUES('JUD',1,2024);
+INSERT INTO medalists VALUES('JUD','Men -100 kg',1,'Gold', 2028);
