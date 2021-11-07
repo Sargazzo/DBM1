@@ -37,8 +37,8 @@ try:
         work_line = work_line.split(",")
         
         # Remove the space before the beginning of the word
-        first_name = work_line[1][1:] # Remove the second part when the csv does not have spaces
-        last_name = work_line[2][1:]
+        first_name = work_line[1]
+        last_name = work_line[2]
         country_code = work_line[4]
         sport_code = work_line[6]
                 
