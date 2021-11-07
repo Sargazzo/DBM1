@@ -1,0 +1,16 @@
+
+1 - For each of the sports how many athletes where enrolled in that discipline?
+
+2 - Which first name was the 2nd most popular among the athletes?
+
+3 - For each country, how many gold, silver and bronze medals did they win in 2020? (medal tally)
+
+4 - For each year between 1980 and 1990, how many athletes were born in that year and what are their names (sorted alphabetically)?
+
+5 - The birth year of athletes that won exactly 1 gold and 1 silver and 1 bronze medal?
+
+6 - From all the winning teams across all events, which team has the most members and what are their names?
+
+7 - Is there any female athlete that won any medal in two different disciplines across in two different editions?
+
+8 - Is there any athlete that skipped one edition of the olympics but then performed better then his/her former participation?
