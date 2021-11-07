@@ -10,6 +10,39 @@ GROUP BY(first_name)
 ORDER BY name_count DESC
 LIMIT 1 OFFSET 1;
 
+
+-- This works - Cant eliminate the NULL value
+SELECT first_name, COUNT(first_name)
+    FROM person NATURAL JOIN athlete
+    WHERE first_name IS NOT NULL AND first_name NOT IN
+        (SELECT first_name
+            FROM person NATURAL JOIN athlete
+            WHERE first_name IS NOT NULL
+            GROUP BY(first_name)
+            HAVING COUNT(first_name) >=ALL(
+                SELECT COUNT(first_name)
+                FROM person NATURAL JOIN athlete
+                WHERE first_name IS NOT NULL
+                GROUP BY(first_name))
+            )
+    GROUP BY(first_name)
+    HAVING COUNT(first_name) >= ALL(SELECT COUNT(first_name)
+    FROM person NATURAL JOIN athlete
+    WHERE first_name IS NOT NULL AND first_name NOT IN
+        (SELECT first_name
+            FROM person NATURAL JOIN athlete
+            WHERE first_name IS NOT NULL
+            GROUP BY(first_name)
+            HAVING COUNT(first_name) >=ALL(
+                SELECT COUNT(first_name)
+                FROM person NATURAL JOIN athlete
+                WHERE first_name IS NOT NULL
+                GROUP BY(first_name))
+            )
+    GROUP BY(first_name)
+    ORDER BY first_name DESC
+    );
+
 -- Third query -- still wrong, get each medal
 SELECT c.name,COUNT(c.country_code) AS medal_num
 FROM (medalists as m INNER JOIN  person as p
