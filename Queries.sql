@@ -3,11 +3,11 @@ SELECT sport_code, COUNT(id) as participants FROM enrolled
 GROUP BY sport_code;
 
 -- Second Query -- It's incomplete if there are more people in first ath the same time or in second
-SELECT first_name, COUNT(first_name) AS name_count
-FROM person NATURAL JOIN athlete
+SELECT first_name, COUNT(first_name) AS occurences_count
+FROM person
 WHERE first_name IS NOT NULL
-GROUP BY(first_name)
-ORDER BY name_count DESC
+GROUP BY first_name
+ORDER BY occurences_count DESC
 LIMIT 1 OFFSET 1;
 
 
