@@ -14,11 +14,17 @@ INSERT INTO medalists VALUES('ARC','Women''s Individual - W1',8,'Gold', 2014);
 INSERT INTO enrolled VALUES('JUD',2731,2028);
 INSERT INTO medalists VALUES('JUD','Women -100 kg',2731,'Gold', 2028);
 
-INSERT INTO enrolled VALUES('JUD',2731,2028);
-INSERT INTO medalists VALUES('JUD','Women -100 kg',2731,'Gold', 2028);
+INSERT INTO enrolled VALUES('ROW',2731,2028);
+INSERT INTO medalists VALUES('ROW','PR2 Mixed Double Sculls - PR2Mix2x',2731,'Gold', 2028);
 
 INSERT INTO enrolled VALUES('JUD',3811,2024);
 INSERT INTO medalists VALUES('JUD','Women -100 kg',3811,'Gold', 2024);
 
 INSERT INTO enrolled VALUES('JUD',2417,2016);
 INSERT INTO medalists VALUES('JUD','Women -100 kg',2417,'Gold', 2016);
+
+INSERT INTO enrolled VALUES('JUD',3104,2016);
+INSERT INTO medalists VALUES('JUD','Women -100 kg',3104,'Gold', 2016);
+
+INSERT INTO enrolled VALUES('PWL',3387,2012);
+INSERT INTO medalists VALUES('PWL','Women's +86 kg',3387,'Silver', 2012);
