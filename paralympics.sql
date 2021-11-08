@@ -49,20 +49,14 @@ CREATE TABLE athlete(
     PRIMARY KEY (id),
     FOREIGN KEY (id) REFERENCES person (id)
 );
+-- Constraint gender follows a format
+ALTER TABLE athlete ADD CONSTRAINT valid_gender CHECK(
+        gender= 'F' OR
+        gender = 'M');
 
--- Person represents a country
 
-/*
-CREATE TABLE represents(
-    id INT NOT NULL,
-    country_code VARCHAR (3),
-    PRIMARY KEY (id, country_code),
-    FOREIGN KEY (id) REFERENCES person (id),
-    FOREIGN KEY (country_code) REFERENCES country (country_code)
-);
-*/
 -------------------------------------
--- Sports Table --
+-- Sports/Disciplines Table --
 
 CREATE TABLE sport(
     sport_code VARCHAR(3),
@@ -81,7 +75,7 @@ CREATE TABLE enrolled(
     FOREIGN KEY (sport_code) REFERENCES sport (sport_code)
 );
 
-
+-- Weak entity event from sport
 CREATE TABLE event(
     sport_code VARCHAR(3),
     name VARCHAR(50),
@@ -89,7 +83,7 @@ CREATE TABLE event(
     FOREIGN KEY (sport_code) REFERENCES sport (sport_code)
 );
 
--- References of table
+-- mealists table
 CREATE TABLE medalists(
     sport_code VARCHAR(3),
     event_name VARCHAR(50),
