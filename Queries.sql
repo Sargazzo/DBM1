@@ -1,4 +1,4 @@
--- First Query -- Katharina corrected it
+-- First Query --
 SELECT name, sport_code, COUNT(DISTINCT(id)) AS participants
 FROM enrolled NATURAL JOIN sport
 GROUP BY (name,sport_code)
@@ -58,7 +58,7 @@ SELECT name, gold_medal_count, silver_medal_count, bronze_medal_count
 FROM COUNTRY
 ORDER BY total_medal_rank ASC;
 
--- Fourth Query -- Those are basically 2 queries
+-- Fourth Query -- Splitted into 2 queries
 
 -- Names of the athletes
 SELECT last_name,first_name, a.date_of_birthday
@@ -70,10 +70,6 @@ ORDER BY last_name
 SELECT COUNT(p.id) as num_of_athletes
 FROM person as p NATURAL JOIN athlete as a
 WHERE EXTRACT (YEAR FROM a.date_of_birthday) BETWEEN 1980 AND 1990;
-
--- Indexing B-Tree
-CREATE INDEX birthday ON athlete USING btree (date_of_birthday);
-DROP index birthday;
 
 -- Fifth Query -- Check
 SELECT EXTRACT (YEAR FROM date_of_birthday)
@@ -128,7 +124,7 @@ ORDER BY winner.id;
 
 -- Eighth Query --
 
--- Assumptions: taken into account that performance improvement is not receiving a medal to receiving a medal
+-- Assumptions: taken into account that performance improvement is : not receiving a medal to then receiving a medal
 SELECT DISTINCT(init.id), init.first_name,init.last_name,init.sport_code
 FROM (person NATURAL JOIN athlete NATURAL JOIN enrolled) AS init
 WHERE init.id IN(
@@ -152,6 +148,10 @@ CREATE INDEX enrolled_index ON enrolled USING hash (year);
 CREATE INDEX medalists_index ON medalists USING hash (year);
 DROP index enrolled_index;
 DROP index medalists_index;
+
+-- Indexing B-Tree
+CREATE INDEX birthday ON athlete USING btree (date_of_birthday);
+DROP index birthday;
 
 
 
