@@ -7,7 +7,7 @@
 --One accomplish
 INSERT INTO enrolled VALUES('WBK',8,2012);
 INSERT INTO medalists VALUES('WBK','Women',8,'Gold', 2012);
-INSERT INTO enrolled VALUES('ARC',8,2016);
+INSERT INTO enrolled VALUES('ARC',8,2014);
 INSERT INTO medalists VALUES('ARC','Women''s Individual - W1',8,'Gold', 2014);
 
 -- Second accomplish
