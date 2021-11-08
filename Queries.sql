@@ -48,6 +48,7 @@ SELECT first_name, COUNT(first_name)
     ORDER BY first_name DESC
     );
 
+-- Index : name, table, type of index, collumn
 CREATE INDEX first_name_index ON person USING hash (first_name);
 DROP INDEX first_name_index;
 
@@ -146,7 +147,7 @@ WHERE init.id IN(
     )
 ORDER BY init.id ASC;
 
--- Index to accelarate querie
+-- Index : name, table, type of index, collumn
 CREATE INDEX enrolled_index ON enrolled USING hash (year);
 CREATE INDEX medalists_index ON medalists USING hash (year);
 DROP index enrolled_index;
