@@ -9,3 +9,7 @@ It contains information on the 2020 Tokyo Paralympics. More specifically, an abu
 We have made certain design choices and visualized them in an ER diagram, as it can be seen in the er-diagram.png file.
 
 We performed preprocessing on the data to format it according to our needs using the preprocessing.py file.
+
+To create the relevant tables in the database, execute the paralympics.sql file.
+
+When populating the database using the 'insert'-files, make sure to execute them in the following order:
