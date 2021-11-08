@@ -1,15 +1,8 @@
--- If you insert athletes first ID = 1 did not win nothing
+-- If you insert athletes first ID = 1 did not win nothing 8 query
 INSERT INTO enrolled VALUES('JUD',1,2028);
-INSERT INTO enrolled VALUES('JUD',1,2024);
-
 INSERT INTO medalists VALUES('JUD','Men -100 kg',1,'Gold', 2028);
 
-
-INSERT INTO enrolled VALUES('ARC',1,2028);
-INSERT INTO medalists VALUES('ARC','Men''s Individual - W1',1,'Gold', 2028);
-
-SELECT * FROM medalists where id = 1;
-SELECT * FROM enrolled where id = 1;
+INSERT person
 
 -- Test 7th query
 INSERT INTO enrolled VALUES('WBK',8,2012);
