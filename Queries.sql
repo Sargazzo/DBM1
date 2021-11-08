@@ -64,7 +64,7 @@ ORDER BY total_medal_rank ASC;
 SELECT last_name,first_name, a.date_of_birthday
 FROM person as p NATURAL JOIN athlete as a
 WHERE EXTRACT (YEAR FROM a.date_of_birthday) BETWEEN 1980 AND 1990
-ORDER BY last_name;
+ORDER BY a.date_of_birthday;
 
 -- Total number
 SELECT COUNT(p.id) as num_of_athletes
