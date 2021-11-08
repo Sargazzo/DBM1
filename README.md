@@ -12,4 +12,8 @@ We performed preprocessing on the data to format it according to our needs using
 
 To create the relevant tables in the database, execute the paralympics.sql file.
 
-When populating the database using the 'insert'-files, make sure to execute them in the following order:
+When populating the database using the 'insert'-files, make sure to execute them in the following order: country, sports,person, athlete, coach,enrolled, events and medalists.
+
+Done!
+
+To see the implementation of our SQL queries, have a look at 'Queries.sql'.
