@@ -1,0 +1,7 @@
+First name of all athletes that won a medal in 2020, but did not win a medal in 2024:
+
+π first_name (person ⨝ athlete ⨝ (σ year ='2020' (medalists))) - π first_name (person ⨝ athlete ⨝ (σ year ='2024’ (medalists)))
+
+All the people (coaches and athletes) who represent Portugal in sport Judo:
+
+π id(σ represents = 'Portugal'(person) ⨝ σ sports_code = 'JUD'(enrolled))
