@@ -17,3 +17,7 @@ When populating the database using the 'insert'-files, make sure to execute them
 Done!
 
 To see the implementation of our SQL queries, have a look at 'Queries.sql'.
+
+We have also a website to visualize the queries:
+
+https://web.tecnico.ulisboa.pt/ist190114/main.cgi
